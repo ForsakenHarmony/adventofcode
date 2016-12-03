@@ -1,9 +1,9 @@
 mod day1;
 
-use day1::easterbunnyhq::find_pos;
+use day1::easterbunnyhq::find_distance;
 
 fn main() {
-  let way = find_pos(
+  let dist = find_distance(
     "R2, L1, R2, R1, R1, L3, R3, L5, L5, L2, L1, R4, R1, R3, L5, L5, R3, \
     L4, L4, R5, R4, R3, L1, L2, R5, R4, L2, R1, R4, R4, L2, L1, L1, R190, \
     R3, L4, R52, R5, R3, L5, R3, R2, R1, L5, L5, L4, R2, L3, R3, L1, L3, \
@@ -16,5 +16,5 @@ fn main() {
     L4, R3, L3, L4, R2, L5, R5"
   );
   
-  println!("{:?}", way);
+  println!("{:?}", dist);
 }
