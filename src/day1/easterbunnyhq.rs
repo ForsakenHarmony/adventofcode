@@ -58,25 +58,23 @@ impl<'a> Runner<'a> {
       
       let dir = curr_step.0;
       
-      if dir.eq("R") {
-        self.turn(true);
-      } else if dir.eq("L") {
-        self.turn(false);
-      } else {
-        println!("Error: Invalid input");
-        break;
+      match dir {
+        "R" => self.turn(true),
+        "L" => self.turn(false),
+        _ => {
+          println!("Error: Invalid input");
+          break;
+        }
       }
-  
+      
       let number = curr_step.1.parse::<i32>().unwrap();
       
       self.move_forward(number);
       
-//      let string_thing = "test";
-//
       println!("step: {:?}, pos: {:?}, facing: {:?}", curr_element,
                self.position, self.facing);
     }
-  
+    
     println!("END pos: {:?}, facing: {:?}", self.position, self.facing);
   }
   
@@ -89,11 +87,7 @@ pub fn find_distance(input: &str) -> i32 {
   let split: Vec<&str> = input.split(", ").collect();
   
   let mut runner = Runner::new(split);
-  
   runner.go();
-  
-//  println!("{:?}", runner);
-  
   runner.get_distance()
 }
 
