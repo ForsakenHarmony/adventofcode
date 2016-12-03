@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 #[derive(Debug)]
 enum Direction {
   North,
@@ -86,9 +88,12 @@ impl<'a> Runner<'a> {
     let mut visited: Vec<Vec<i32>> = vec!(vec!(0, 0));
     let mut visited_again_count = 0;
     
-    for step in self.steps.clone() {
+    'outer: for step in self.steps.clone() {
       let curr_step: (&str, &str) = step.split_at(1);
       let dir = curr_step.0;
+      
+      println!("{:?} -> facing: {:?}, step: {:?}", self.position, self.facing,
+               step);
       
       match dir {
         "R" => self.turn(true),
@@ -100,33 +105,33 @@ impl<'a> Runner<'a> {
       }
       
       let number = curr_step.1.parse::<i32>().unwrap();
-      self.move_forward(number);
       
-      let res: Option<usize>;
-      
-      {
-        let mut iter = visited.iter();
+      for i in 0..number {
+        self.move_forward(1);
         
-        res = iter.position(|r| *r == self.position);
+        let res: Option<usize>;
         
-        println!("{:?}", res);
-      }
-  
-      println!("step: {:?}, pos: {:?}, facing: {:?}", curr_step,
-               self.position, self.facing);
-      
-      if res != None {
-        visited_again_count += 1;
-        
-        println!("again: {:?}, index: {:?}", visited[res.unwrap()],
-                 res.unwrap());
-        
-        if visited_again_count == 2 {
-          break;
+        {
+          res = visited.iter().position(|r| *r == self.position);
+          
+          println!("{:?} -> {:?}", self.position, res);
         }
+        
+        if res != None {
+          visited_again_count += 1;
+          
+          println!("{:?} -> again: {:?}, index: {:?}",
+                   self.position, visited[res.unwrap()], res.unwrap());
+          
+          if visited_again_count == 2 {
+            break 'outer;
+          }
+        }
+        
+        visited.push(self.position.clone());
       }
       
-      visited.push(self.position.clone());
+      println!("{:?} -> facing: {:?} \n", self.position, self.facing);
     }
     
     self.position.clone()
